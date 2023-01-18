@@ -113,22 +113,14 @@ plt.show()
 
 
 df_centers = pd.DataFrame(cls_centers[:,1:3], columns = ['2016', '2021'])
-print(df_centers)
+print("\n","centroids for both the years: ","\n",df_centers)
 
 # data = data.groupby('Country Name').sum()
 
-'''
-# transpose the data set
-df_t = pd.DataFrame.transpose(get_t_data)
-# getting the 0th position values to get-into list
-new_header = df_t.iloc[0].values.tolist()
-# reassign them into columns
-df_t.columns = new_header
-# get the data after from the 1: position
-df_t = df_t.iloc[1:]
-# return the variable
-return df_t
-'''
+
+
+
+
 
 '''
 # transposing the data
@@ -140,12 +132,6 @@ print(data_tp)
 
 # data1 = data_tp.head(150)
 
-
-
-
-# data1.plot.bar(y = ['2010','2012','2014','2016','2018','2020','2021'])
-data1.plot.line(y = ['United Kingdom', 'Canada','Japan', 'India', 'France'])
-plt.show()
 
 
 import scipy.optimize as opt
