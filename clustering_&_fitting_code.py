@@ -118,11 +118,51 @@ print("\n","centroids for both the years: ","\n",df_centers)
 # data = data.groupby('Country Name').sum()
 
 
+# curve-fitting
+import scipy.optimize as opt
 
+def logistics(tm, growth, scale, time):
+    lg = scale / (1.0 + np.exp(-growth * (tm - time)))
+    return lg
+
+def linear(x, a, b):
+    """ Simple linear function calculating a + b*x. """
+    f = a + b*x
+    return f
+
+data.dropna(inplace=True)
+cf_data = data[['Country Name','2012','2016', '2020', '2021']]
+
+# print(cf_data.dtypes)
+
+x = np.array([cf_data['2020']])
+# print(x)
+y = np.array([cf_data['2021']])
+parameters , covariance = opt.curve_fit(logistics, cf_data['2020'], cf_data['2021'])
+
+print("\n",parameters ,"\n \n", covariance, "\n")
+
+
+cf_data['para_log'] = logistics(cf_data['2020'], *parameters)
+# print(cf_data)
+
+plt.figure()
+plt.plot(cf_data['2021'], label = "data", )
+plt.plot(cf_data['para_log'], label = "fit")
+plt.show()
 
 
 
 '''
+
+cf_data = data[['Country Name','2012','2016', '2020', '2021']]
+
+# print(cf_data.dtypes)
+
+parameters , covariance = opt.curve_fit(exponential_function, cf_data['2020'].head(20), cf_data['2021'].head(20))
+print(parameters)
+
+
 # transposing the data
 data_tp = pd.DataFrame.transpose(data)
 new_header = data_tp.iloc[0].values.tolist()
