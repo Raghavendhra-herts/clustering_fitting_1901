@@ -119,7 +119,7 @@ print("\n","centroids for both the years: ","\n",df_centers)
 
 # data = data.groupby('Country Name').sum()
 
-'''
+
 # curve-fitting
 import scipy.optimize as opt
 
@@ -132,11 +132,43 @@ def linear(x, a, b):
     f = a + b*x
     return f
 
+ 
+
+def exponential(x, l, m ,n):
+    return l * x + m * x**2 + n
+
+
 data.dropna(inplace=True)
 cf_data = data[['Country Name','2012','2016', '2020', '2021']]
+# getting numpy representation of the dataframe
+cf_data = cf_data.values
+# choosing the input & output values
+x , y = cf_data[:, 4], cf_data[:,-1]
+# applying the curve_fit to above inputs
+params, _ = curve_fit(exponential, x ,y)
+# print(params)
+# get the summarize of the parameters value from the above fit call
+val1, val2, val3 = params
+
+# printing the optinal parameters value
+expr_y = '%.5f * x + %.5f * x**2 + %.5f' % (val1, val2, val3)
+print("\n", expr_y)
+
+# plotting the scatter plot by passing the input  & output values( x&y)
+plt.scatter(x, y)
+# identifying the maximum and minimum values from the given inputs
+x_val = arange(min(x), max(x), 1)
+# calculating the output from the range (min and max)
+y_val = exponential(x_val, val1, val2, val3)
+print()
+# for the above mapping function , create a line plot
+plt.plot(x_val, y_val , "--", color='r')
+# showing the plot result
+plt.show()
+
 
 # print(cf_data.dtypes)
-
+'''
 x = np.array([cf_data['2020']])
 # print(x)
 y = np.array([cf_data['2021']])
@@ -153,58 +185,8 @@ plt.plot(cf_data['2020'],cf_data['2021'], label = "data", )
 plt.plot(cf_data['2020'],cf_data['para_log'], label = "fit")
 plt.show()
 
-'''
+
 data1 = data[['Country Name','2012','2016', '2020', '2021']]
 data1 = data1.values
 # print(data)
-x, y = data1[:, 4], data1[:, -1]
-print(x)
-print(y)
-
-def objective(x, a, b, c):
-	return a * x + b * x**2 + c
-
-popt, _ = curve_fit(objective, x, y)
-a, b, c = popt
-print('y = %.5f * x + %.5f * x^2 + %.5f' % (a, b, c))
-plt.scatter(x, y)
-x_line = arange(min(x), max(x), 1)
-y_line = objective(x_line, a, b, c)
-plt.plot(x_line, y_line, '--', color='red')
-plt.show()
-
 '''
-
-cf_data = data[['Country Name','2012','2016', '2020', '2021']]
-
-# print(cf_data.dtypes)
-
-parameters , covariance = opt.curve_fit(exponential_function, cf_data['2020'].head(20), cf_data['2021'].head(20))
-print(parameters)
-
-
-# transposing the data
-data_tp = pd.DataFrame.transpose(data)
-new_header = data_tp.iloc[0].values.tolist()
-data_tp.columns = new_header
-data_tp = data_tp.iloc[1:]
-print(data_tp)
-
-# data1 = data_tp.head(150)
-
-
-
-import scipy.optimize as opt
-
-def exponential_function(tm, growth, scale):
-    exp = scale * np.exp(growth * (tm-1960))
-    return exp
-
-def logistics(tm, growth, scale, time):
-    lg = scale / (1.0 + np.exp(-growth * (tm - time)))
-    return lg
-
-data = data.groupby().sum()
-print(data)
-# parameters , covr = opt.curve_fit(exponential_function, data1[])
-    '''
