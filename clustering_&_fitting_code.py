@@ -13,6 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import cluster
 import sklearn.metrics as skmet
+from scipy.optimize import curve_fit
+from numpy import arange
 
 
 data = pd.read_csv('API_NY.GDP.PCAP.CD_DS2_en_csv_v2_4770417.csv')
@@ -117,7 +119,7 @@ print("\n","centroids for both the years: ","\n",df_centers)
 
 # data = data.groupby('Country Name').sum()
 
-
+'''
 # curve-fitting
 import scipy.optimize as opt
 
@@ -138,20 +140,38 @@ cf_data = data[['Country Name','2012','2016', '2020', '2021']]
 x = np.array([cf_data['2020']])
 # print(x)
 y = np.array([cf_data['2021']])
-parameters , covariance = opt.curve_fit(logistics, cf_data['2020'], cf_data['2021'])
+parameters , covariance = opt.curve_fit(linear, cf_data['2020'], cf_data['2021'])
 
 print("\n",parameters ,"\n \n", covariance, "\n")
 
 
-cf_data['para_log'] = logistics(cf_data['2020'], *parameters)
+cf_data['para_log'] = logistics(cf_data['2020'], *parameters, 1)
 # print(cf_data)
 
 plt.figure()
-plt.plot(cf_data['2021'], label = "data", )
-plt.plot(cf_data['para_log'], label = "fit")
+plt.plot(cf_data['2020'],cf_data['2021'], label = "data", )
+plt.plot(cf_data['2020'],cf_data['para_log'], label = "fit")
 plt.show()
 
+'''
+data1 = data[['Country Name','2012','2016', '2020', '2021']]
+data1 = data1.values
+# print(data)
+x, y = data1[:, 4], data1[:, -1]
+print(x)
+print(y)
 
+def objective(x, a, b, c):
+	return a * x + b * x**2 + c
+
+popt, _ = curve_fit(objective, x, y)
+a, b, c = popt
+print('y = %.5f * x + %.5f * x^2 + %.5f' % (a, b, c))
+plt.scatter(x, y)
+x_line = arange(min(x), max(x), 1)
+y_line = objective(x_line, a, b, c)
+plt.plot(x_line, y_line, '--', color='red')
+plt.show()
 
 '''
 
