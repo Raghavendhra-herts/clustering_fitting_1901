@@ -5,6 +5,8 @@ Created on Wed Jan 14 11:27:22 2023
 @author: Raghavendhra Rao Devineni
 """
 # student ID: 21072747
+# GitHub Repository: https://github.com/Raghavendhra-herts/clustering_fitting_1901
+
 
 # Clustering and Fitting
 
