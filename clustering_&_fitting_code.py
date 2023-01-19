@@ -101,7 +101,7 @@ def show_clustering(selected_data, data):
     df_centers = pd.DataFrame(cls_centers[:,1:3], columns = ['2016', '2021'])
     print("\n","centroids for both the years: ","\n",df_centers)
     
-    # data = data.groupby('Country Name').sum()
+    # data  = data.groupby('Country Name').sum()
 
 
 
