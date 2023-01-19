@@ -4,6 +4,7 @@ Created on Wed Jan 14 11:27:22 2023
 
 @author: Raghavendhra Rao Devineni
 """
+# student ID: 21072747
 
 # Clustering and Fitting
 
@@ -20,11 +21,9 @@ import scipy.optimize as opt
 
 # creating the heap_map for the dataset
 def heat_map_corr(data, size = 10):
-    '''
-    
+    '''   
     this function is to create a heatmap for the correlation matrix for each column
     in the dataframe
-
     '''
     # getting the correlation for the data
     corr = data.corr()
