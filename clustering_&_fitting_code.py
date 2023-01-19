@@ -113,6 +113,9 @@ def show_curve_fit(data):
         '''
         this is the refression model , it works by adding the squared terms to 
         the exponential function
+        where x is an dependent variable
+        l & m are the coeffiecient x & y
+        n is the constant
         '''
         exp = l * x + m * x**2 + n
         return exp
