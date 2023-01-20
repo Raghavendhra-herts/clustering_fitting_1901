@@ -21,6 +21,48 @@ from numpy import arange
 import scipy.optimize as opt
 
 
+def prepare_data(datafile):
+    '''
+    In this function I'm preparing to read the dataset in a .csv format taken 
+    from the Worldbank
+    and returning the dataset 
+
+    '''
+    data = pd.read_csv(datafile)
+    # printing the first five rows
+    print(data.head())
+    # finding the NaN/null values and fill the into 0
+    data = data.fillna(0)
+    # dropping the un-necessary columns
+    data = data.drop(columns=['Country Code', 'Indicator Name', 'Indicator Code','Unnamed: 66'])
+
+    '''
+    print(data.head())
+    print(data.dtypes)
+    # print("\n", data.columns)
+    # print(data.isna().sum())
+    '''
+    return data
+
+def transpose_data(data):
+    '''
+    
+    In this function I'm passing the attriburte get_t_data, it will send the data
+    to this function for transposing the dataset.
+    and return the new dataframe
+
+    '''
+    # transpose the data set
+    df_t = pd.DataFrame.transpose(data)
+    # getting the 0th position values to get-into list
+    new_header = df_t.iloc[0].values.tolist()
+    # reassign them into columns
+    df_t.columns = new_header
+    # get the data after from the 1: position
+    df_t = df_t.iloc[1:]
+    # return the variable
+    return df_t
+
 # creating the heap_map for the dataset
 def heat_map_corr(data, size = 10):
     '''   
@@ -160,20 +202,15 @@ def show_curve_fit(data):
 if __name__ == "__main__":
     # read the dataset into csv format
     # I have chosen Gdp per capita dataset from world bank
-    data = pd.read_csv('API_NY.GDP.PCAP.CD_DS2_en_csv_v2_4770417.csv')
-    # printing the first five rows
-    print(data.head())
-    # finding the NaN/null values and fill the into 0
-    data = data.fillna(0)
-    # dropping the un-necessary columns
-    data = data.drop(columns=['Country Code', 'Indicator Name', 'Indicator Code','Unnamed: 66'])
-
-    '''
-    print(data.head())
-    print(data.dtypes)
-    # print("\n", data.columns)
-    # print(data.isna().sum())
-    '''
+    datafile = 'API_NY.GDP.PCAP.CD_DS2_en_csv_v2_4770417.csv'
+    
+    # calling the function to prepare the data
+    data = prepare_data(datafile)
+    print(data,"\n \n \n")
+    
+    # calling the function to transpose the dataset 
+    data_t = transpose_data(data)
+    print(data_t,"\n \n \n")
     
     # printing the statistics variable for the data
     print("\n", data.describe())
